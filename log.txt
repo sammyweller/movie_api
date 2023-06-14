@@ -16,3 +16,9 @@ Timestamp: Wed May 24 2023 18:58:07 GMT-0400 (Eastern Daylight Time)
 URL: /favicon.ico
 Timestamp: Wed May 24 2023 18:58:07 GMT-0400 (Eastern Daylight Time)
 
+::ffff:127.0.0.1 - - [14/Jun/2023:20:22:35 +0000] "GET / HTTP/1.1" 200 25 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [14/Jun/2023:20:22:35 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://127.0.0.1:8080/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::1 - - [14/Jun/2023:20:24:29 +0000] "GET / HTTP/1.1" 200 25 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::1 - - [14/Jun/2023:20:24:29 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:8080/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::1 - - [14/Jun/2023:20:24:36 +0000] "GET /documentation HTTP/1.1" 200 584 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::1 - - [14/Jun/2023:20:25:01 +0000] "GET /movies HTTP/1.1" 200 102 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
