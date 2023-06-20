@@ -12,18 +12,87 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 app.use(morgan('combined', {stream: accessLogStream})); // setup the logger
 
 
+let users = [
+  {
+    username: "sammyweller",
+    password: "goodpassword1",
+    email: "",
+    dateOfBirth: "",
+    favoriteMovie: "Contact"
+  },
+
+  {
+    username: "johnsmith",
+    password: "goodpassword2",
+    email: "",
+    dateOfBirth: "",
+    favoriteMovie: "Interstellar"
+  },
+
+  {
+    username: "janedoe",
+    password: "goodpassword3",
+    email: "",
+    dateOfBirth: "",
+    favoriteMovie: "Arrival"
+  }
+
+]
+
 let topMovies = [
     {
-      title: 'Contact',
-      year: 1997
+      title: "Contact",
+    
+      description: "",
+      
+      genre: {
+        name: "",
+        description: ""
+      },
+      
+      director: {
+        name: "",
+        birthYear: "",
+        deathYear: ""
+      },
+
+      imgUrl: ""
     },
     {
       title: 'Interstellar',
-      year: 2014
+
+      description: "",
+      
+      genre: {
+        name: "",
+        description: ""
+      },
+      
+      director: {
+        name: "",
+        birthYear: "",
+        deathYear: ""
+      },
+
+      imgUrl: ""
     },
     {
       title: 'Arrival',
-      year: 2016
+      
+      description: "",
+      
+      genre: {
+        name: "",
+        description: ""
+      },
+      
+      director: {
+        name: "",
+        birthYear: "",
+        deathYear: ""
+      },
+
+      imgUrl: ""
     }
   ];
 
