@@ -31,7 +31,7 @@ app.use(bodyParser.json()); //data will be expected to be in JSON format (and re
 
 
 
-// NEW READ: Get all users - WORKS
+// READ: Get all users
 app.get('/users', (req, res) => {
   Users.find()
     .then((users) => {
@@ -45,7 +45,7 @@ app.get('/users', (req, res) => {
 
 
 
-// NEW READ: get a user by username - WORKS
+// READ: get a user by username
 app.get('/users/:username', (req, res) => {
   Users.findOne({ username: req.params.username })
     .then((user) => {
@@ -59,7 +59,7 @@ app.get('/users/:username', (req, res) => {
 
 
 
-//NEW READ: return all movies to user: - WORKS
+//READ: return all movies to user: 
 app.get('/movies', (req, res) => {
   Movies.find()
     .then((movies) => {
@@ -75,7 +75,7 @@ app.get('/movies', (req, res) => {
 
 
 
-//NEW READ: Return data about a single movie by title to the user - WORKS
+//READ: Return data about a single movie by title to the user 
 app.get('/movies/:title', (req, res) => {
   Movies.findOne({ title: req.params.title })
     .then((movies) => {
@@ -90,7 +90,7 @@ app.get('/movies/:title', (req, res) => {
 
 
 
-//NEW READ: Return data about a genre by name - WORKS
+// READ: Return data about a genre by name 
 app.get("/genre/:name", (req, res) => {
     Movies.findOne({ "genre.name": req.params.name })
       .then((movie) => {
@@ -106,7 +106,7 @@ app.get("/genre/:name", (req, res) => {
 
 
 
-//READ: Return data about a director by name - WORKS
+//READ: Return data about a director by name 
 app.get("/director/:name", (req, res) => {
   Movies.findOne({ "director.name": req.params.name })
     .then((movie) => {
@@ -122,7 +122,7 @@ app.get("/director/:name", (req, res) => {
 
 
 
-//NEW CREATE: Add a user - WORKS
+// CREATE: Add a user 
 app.post('/users', (req, res) => {
   Users.findOne({ username: req.body.username }) //check if they exist
     .then((user) => {
@@ -151,7 +151,7 @@ app.post('/users', (req, res) => {
 
 
 
-//NEW UPDATE: Allow users to update their user info by username - WORKS
+// UPDATE: Allow users to update their user info by username 
 app.put("/users/:username", (req, res) => {
   Users.findOneAndUpdate(
     { username: req.params.username },
@@ -176,7 +176,7 @@ app.put("/users/:username", (req, res) => {
 
 
 
-//NEW CREATE: Allow users to add a movie to their list of favorites - WORKS
+// CREATE: Allow users to add a movie to their list of favorites 
 app.post('/users/:username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate(
     { username: req.params.username },
@@ -193,7 +193,7 @@ app.post('/users/:username/movies/:MovieID', (req, res) => {
 });
 
 
-//NEW DELETE: Allow users to remove a movie from their list of favorites
+// DELETE: Allow users to remove a movie from their list of favorites
 app.delete('/users/:username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate(
     { username: req.params.username },
@@ -219,7 +219,7 @@ app.delete('/users/:username/movies/:MovieID', (req, res) => {
 
 
 
-// NEW DELETE: Allow existing users to deregister - WORKS
+//  DELETE: Allow existing users to deregister 
 app.delete('/users/:username', (req, res) => {
   Users.findOneAndRemove({ username: req.params.username })
     .then((user) => {
