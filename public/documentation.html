@@ -26,18 +26,26 @@
         <tbody>
 
 
-
-
-
-
-
-
-
-
-
-
-
           
+          <tr> <!--Return a list of all users-->
+            <td>Get a list of all users</td>
+            <td>/users</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>None</td>
+            <td>A JSON object holding data about all users</td>
+          </tr>
+
+          <tr> <!--Return data about single user by name-->
+            <td>Return data about a single movie by title</td>
+            <td>/users/:username</td>
+            <td>GET</td>
+            <td>:username</td>
+            <td>None</td>
+            <td>A JSON object holding data about a single user. For example: [username:"", password"", email:"", dateOfBirth:""]</td>
+          </tr>
+
+
           <tr> <!--Return a list of all movies-->
             <td>Get a list of all movies</td>
             <td>/movies</td>
@@ -54,25 +62,25 @@
             <td>GET</td>
             <td>:title</td>
             <td>None</td>
-            <td>A JSON object holding data about a single movie. For example: [name:"", description"", genre:"", director:"", imgUrl""]</td>
+            <td>A JSON object holding data about a single movie. For example: [name:"", description"", genre:"", director:"", imgPath""]</td>
           </tr>
   
           <tr><!--Returns data about a genre by specific genre name-->
             <td>Returns data about a genre by name</td>
-            <td>/movies/genre/:genreName</td>
+            <td>/genre/:name</td>
             <td>GET</td>
-            <td>:genreName</td>
+            <td>:name</td>
             <td>None</td>
             <td>A JSON object holding data about a specific genre. For example: [name:"", description: ""]</td>
           </tr>
   
           <tr><!-- Return data about a director (bio, birth year, death year) by name-->
             <td>Returns data about a director by name</td>
-            <td>/movies/director/:directorName</td>
+            <td>/director/:name</td>
             <td>GET</td>
-            <td>:directorName</td>
+            <td>:name</td>
             <td>None</td>
-            <td>A JSON object of a specific director. For example: [name:"", bio"", birthYear:"", deathYear:""]</td>
+            <td>A JSON object of a specific director. For example: [name:"", bio"", birth:""]</td>
           </tr>
   
           <tr><!--Allow new users to register-->
@@ -86,9 +94,9 @@
   
           <tr><!--Allow users to update their user info-->
             <td>Allow users to update their user info</td>
-            <td>/users/:id</td>
+            <td>/users/:username</td>
             <td>PUT</td>
-            <td>:id</td>
+            <td>:username</td>
             <td>A JSON object holding data about the updated user information</td>
             <td>A JSON object holding data about the updated user information</td>
           </tr>
@@ -96,27 +104,27 @@
   
           <tr> <!--Allow users to add a movie to their list of favorites-->
             <td>Allows users to add a movie to their favorites</td>
-            <td>/users/:id/:movieTitle</td>
+            <td>/users/:username/movies/:MovieID</td>
             <td>POST</td>
-            <td>:id, :movieTitle</td>
+            <td>:username, :movieID</td>
             <td>None</td>
-            <td>A JSON object holding data about the user and the movie that was added. For example: [name:"", description"", genre:"", director:"", imgUrl""]</td>
+            <td>A JSON object holding data about the user and the movie that was added. For example: [title:"", description"", genre:"", director:"", imgPath""]</td>
           </tr>
   
           <tr><!--Allow users to remove a movie from their list of favorites-->
             <td>Allows users to remove a movie from their favorites</td>
-            <td>/users/:id/:movieTitle</td>
+            <td>/users/:username/movies/:MovieID</td>
             <td>DELETE</td>
-            <td>:id, :movieTitle</td>
+            <td>:username, :movieID</td>
             <td>None</td>
             <td>Text indicating the movie has been removed from the user's list</td>
           </tr>
   
           <tr><!--Allow existing users to deregister/deleted-->
             <td>Allows a user to deregister</td>
-            <td>/users/:id</td>
+            <td>/users/:username</td>
             <td>DELETE</td>
-            <td>:id</td>
+            <td>:username</td>
             <td>None</td>
             <td>Text confirming the user has been removed</td>
           </tr>
