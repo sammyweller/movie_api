@@ -14,8 +14,16 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser')
 const uuid = require('uuid');
+const { check, validationResult } = require('express-validator');
+
 
 const app = express(); //declares a variable that encapsulates Express’s functionality to configure your web server
+
+
+//Allow requests from all domans:
+const cors = require('cors');
+app.use(cors());
+
 
 
 //Middleware: 
@@ -25,6 +33,7 @@ app.use(bodyParser.json()); //data will be expected to be in JSON format (and re
 
 /* The bodyParser middleware helps the application understand the JSON data sent in the request. 
 It takes care of decoding and processing the JSON payload, making it accessible and usable within the app. */
+
 
 
 let auth = require('./auth')(app); // Import auth.js. Must be placed after bodyParser middleware function
@@ -51,7 +60,6 @@ app.get('/users', passport.authenticate('jwt', { session: false }),   (req, res)
 });
 
 
-
 // READ: get a user by username
 app.get('/users/:username', passport.authenticate('jwt', { session: false }),  (req, res) => {
   Users.findOne({ username: req.params.username })
@@ -63,7 +71,6 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }),  (
       res.status(500).send('Error: ' + err);
     });
 });
-
 
 
 //READ: return all movies to user: 
@@ -79,7 +86,6 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 
-
 //READ: Return data about a single movie by title to the user 
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }),  (req, res) => {
   Movies.findOne({ title: req.params.title })
@@ -91,7 +97,6 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }),  (re
       res.status(500).send('Error: ' + err);
     });
 });
-
 
 
 // READ: Return data about a genre by name 
@@ -108,7 +113,6 @@ app.get("/genre/:name", passport.authenticate('jwt', { session: false }),  (req,
 );
 
 
-
 //READ: Return data about a director by name 
 app.get("/director/:name", passport.authenticate('jwt', { session: false }),   (req, res) => {
   Movies.findOne({ "director.name": req.params.name })
@@ -123,27 +127,38 @@ app.get("/director/:name", passport.authenticate('jwt', { session: false }),   (
 );
 
 
-
-
 // CREATE: Add a user 
-app.post('/users', passport.authenticate('jwt', { session: false }),  (req, res) => {
-  Users.findOne({ username: req.body.username }) //check if they exist
+app.post('/users', 
+[
+  check('username', 'Username is required').isLength({min: 5}),
+  check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('password', 'Password is required').not().isEmpty(),
+  check('email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+   // check the validation object for errors:
+   let errors = validationResult(req);
+   if (!errors.isEmpty()) {
+     return res.status(422).json({ errors: errors.array() });
+   }
+  let hashedPassword = Users.hashPassword(req.body.password);
+  Users.findOne({ username: req.body.username }) // Search to see if a user with the requested username already exists
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.username + 'already exists');
+      //If the user is found, send a response that it already exists
+        return res.status(400).send(req.body.username + ' already exists');
       } else {
         Users
-          .create({ //if they don't already exist, create new user
+          .create({
             username: req.body.username,
-            password: req.body.password,
+            password: hashedPassword,
             email: req.body.email,
             dateOfBirth: req.body.dateOfBirth
           })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
+          .then((user) => { res.status(201).json(user) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
       }
     })
     .catch((error) => {
@@ -153,30 +168,40 @@ app.post('/users', passport.authenticate('jwt', { session: false }),  (req, res)
 });
 
 
-
 // UPDATE: Allow users to update their user info by username 
-app.put("/users/:username", passport.authenticate('jwt', { session: false }),  (req, res) => {
-  Users.findOneAndUpdate(
-    { username: req.params.username },
-    {
-      $set: {
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        dateOfBirth: req.body.dateOfBirth,
+app.put('/users/:username', passport.authenticate('jwt', { session: false }),
+  [
+    check('username', 'Username is required').isLength({ min: 5 }),
+    check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+    let errors = validationResult(req);
+    let hashedPassword = Users.hashPassword(req.body.password);
+    Users.findOneAndUpdate(
+      { username: req.params.username },
+      {
+        $set: {
+          username: req.body.username,
+          password: hashedPassword,
+          email: req.body.email,
+          dateOfBirth: req.body.dateOfBirth
+        },
       },
-    },
-    { new: true }
-  )
-    .then((updatedUser) => {
-      res.json(updatedUser);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: "Internal server error" });
-    });
-});
-
+      { new: true }
+    )
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send('Error: No user was found');
+        } else {
+          res.json(user);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
 
 
 // CREATE: Allow users to add a movie to their list of favorites 
@@ -221,7 +246,6 @@ app.delete('/users/:username/movies/:MovieID', passport.authenticate('jwt', { se
 });
 
 
-
 //  DELETE: Allow existing users to deregister 
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }),  (req, res) => {
   Users.findOneAndRemove({ username: req.params.username })
@@ -247,7 +271,7 @@ app.use((err, req, res, next) => {
 });
 
 
-// listen for requests
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
