@@ -56,7 +56,11 @@ require('./passport');
 
 // CRUD: 
 
-// passport.authenticate('jwt', { session: false }),
+//READ: Welcome message
+app.get('/', (req, res) => {
+  res.send('Welcome to the best movie app in the world!');
+});
+
 
 // READ: Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }),   (req, res) => {
