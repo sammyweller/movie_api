@@ -8,7 +8,7 @@ const Users = Models.User;
 
 //allows Mongoose to connect to that database so it can perform CRUD operations: 
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Imports the express module locally so it can be used within the file:
 const express = require('express'); 
