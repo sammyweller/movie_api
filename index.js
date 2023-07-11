@@ -21,7 +21,7 @@ const { check, validationResult } = require('express-validator');
 const app = express(); //declares a variable that encapsulates Express’s functionality to configure your web server
 
 
-//Allow requests from all domans:
+//Allow requests from certain domains:
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://sw-myflix-app-baa5e3f40824.herokuapp.com'];
 app.use(cors({
