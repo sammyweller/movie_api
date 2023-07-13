@@ -23,7 +23,7 @@ const app = express(); //declares a variable that encapsulates Express’s funct
 
 //Allow requests from certain domains:
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://sw-myflix-app-baa5e3f40824.herokuapp.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://testsite.com', 'https://sw-myflix-app-baa5e3f40824.herokuapp.com'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
