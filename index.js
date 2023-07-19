@@ -243,23 +243,20 @@ app.delete('/users/:username/movies/:MovieID', passport.authenticate('jwt', { se
     { username: req.params.username },
     { $pull: { favoriteMovies: req.params.MovieID } },
     { new: true }
-  )
+    )
     .then((updatedUser) => {
-      res.status(200).send(
-        'The movie with ID ' +
-          req.params.MovieID +
-          ' was deleted from the list of favorites. ' +
-          'Favorites of ' +
-          updatedUser.username +
-          ': ' +
-          updatedUser.favoriteMovies
-      );
+      res.json(updatedUser);
     })
     .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
     });
-});
+}
+);
 
 
 //  DELETE: Allow existing users to deregister 
